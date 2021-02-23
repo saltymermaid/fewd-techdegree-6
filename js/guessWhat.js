@@ -1,5 +1,5 @@
 const pressedKey = document.querySelector('#qwerty').value;
-const phrase = document.querySelector('#phrase');
+const phrase = document.querySelector('#phrase > ul');
 const resetButton = document.querySelector('#start-game');
 const overlay = document.querySelector('#overlay');
 let missed = 0;
@@ -15,18 +15,26 @@ function getRandomPhraseAsArray(allPhrases) {
 }
 
 function addPhraseToDisplay(phraseArr) {
-  let letters = '';
   phraseArr.forEach(letter => {
-    let charClass = '';
+    const li = document.createElement("li");
+    phrase.appendChild(li);
     if(letter !== ' ') {
-      charClass = 'letter';
+      li.setAttribute("class", "letter")
     } else {
-      charClass = 'space';
+      li.setAttribute("class", "space")
     }
-    letters += `<li class="${charClass}">${letter}</li>`
+    li.innerHTML = letter;
   });
-  phrase.innerHTML = letters;
 }
 
 const phraseArray = getRandomPhraseAsArray(phrases);
 addPhraseToDisplay(phraseArray); 
+
+function checkLetter(pressedKey) {
+  allLetters = document.querySelectorAll('#phrase > ul > li.letter')
+  allLetters.forEach(letter => {
+    if(letter.innerHTML === pressedKey) {
+      letter.classList.add("show")
+    }
+  })
+}
