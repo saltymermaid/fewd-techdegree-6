@@ -1,12 +1,14 @@
 const keyboard = document.getElementById('qwerty');
-const phrase = document.querySelector('#phrase > ul');
+const phrase = document.querySelector('#phrase');
 const resetButton = document.getElementById('start-game');
 const overlay = document.getElementById('overlay');
 const scoreboard = document.getElementById('scoreboard');
+const hearts = document.querySelectorAll('li.tries > img')
 let missed = 0;
 
 resetButton.addEventListener('click', () => {
   overlay.style.display = 'none';
+  setUpGame();
 });
 
 function getRandomPhraseAsArray(allPhrases) {
@@ -18,7 +20,8 @@ function getRandomPhraseAsArray(allPhrases) {
 function addPhraseToDisplay(phraseArr) {
   phraseArr.forEach(letter => {
     const li = document.createElement("li");
-    phrase.appendChild(li);
+    const phraseUl = document.querySelector('#phrase > ul');
+    phraseUl.appendChild(li);
     if(letter !== ' ') {
       li.setAttribute("class", "letter")
     } else {
@@ -28,8 +31,32 @@ function addPhraseToDisplay(phraseArr) {
   });
 }
 
-const phraseArray = getRandomPhraseAsArray(phrases);
-addPhraseToDisplay(phraseArray); 
+function setUpGame() {
+  // reset missed counter
+  missed = 0;
+  // replace the ul element with a fresh one
+  const ul = document.createElement("ul");
+  const phraseUl = document.querySelector('#phrase > ul');
+  phrase.replaceChild(ul, phraseUl);
+  // generate and display new phrase
+  const phraseArray = getRandomPhraseAsArray(phrases);
+  addPhraseToDisplay(phraseArray);
+  // reset keyboard
+  const keys = document.querySelectorAll('.keyrow > button.chosen');
+  keys.forEach(key => {
+    key.removeAttribute("class", "chosen");
+    key.removeAttribute("disabled", "true");
+  });
+  // reset hearts
+  hearts.forEach(heart => {
+    heart.setAttribute("src", "images/liveHeart.png")
+  });
+  // reset message
+  const message = document.querySelector('#overlay > p.message');
+  if (message) {
+    message.remove();
+  };
+}
 
 function checkLetter(pressedKey) {
   let selectedLetter = null
@@ -47,8 +74,9 @@ function updateOverlay(status, message) {
   overlay.style.display = 'flex';
   overlay.setAttribute("class", status);
   const p = document.createElement("p");
+  p.setAttribute("class", "message");
   overlay.appendChild(p);
-  text = message;
+  let text = message;
   p.textContent = text;
   resetButton.textContent = "Play again";
 }
@@ -60,7 +88,6 @@ keyboard.addEventListener('click', (e) => {
   let letterFound = checkLetter(pressedKey);
   if(!letterFound) {
     missed += 1;
-    let hearts = document.querySelectorAll('li.tries > img')
     for (let i = 0; i < missed; i++) {
       hearts[i].setAttribute("src", "images/lostHeart.png")
     }
