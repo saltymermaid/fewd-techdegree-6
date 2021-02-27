@@ -6,6 +6,24 @@ const scoreboard = document.getElementById('scoreboard');
 const hearts = document.querySelectorAll('li.tries > img')
 let missed = 0;
 
+const phrases = [
+  'Shiver me timbers',
+  'Batten down the hatches',
+  'Dead men tell no tales',
+  'Ahoy matey',
+  'Walk the plank',
+  'Avast ye',
+  'Ahoy me hearties',
+  'Cleave him to the brisket',
+  'Fire in the hole',
+  'Hornswaggle',
+  'Pieces of eight',
+  'Scallywag',
+  'Son of a biscuit eater',
+  'Thar she blows',
+  'Yo ho ho and a bottle of rum'
+]
+
 resetButton.addEventListener('click', () => {
   overlay.style.display = 'none';
   setUpGame();
@@ -49,7 +67,7 @@ function setUpGame() {
   });
   // reset hearts
   hearts.forEach(heart => {
-    heart.setAttribute("src", "images/liveHeart.png")
+    heart.setAttribute("src", "images/livePirate.png")
   });
   // reset message
   const message = document.querySelector('#overlay > p.message');
@@ -83,20 +101,21 @@ function updateOverlay(status, message) {
 
 keyboard.addEventListener('click', (e) => {
   let pressedKey = (e.target.innerHTML).toLowerCase();
-  e.target.setAttribute("class", "chosen");
-  e.target.setAttribute("disabled", "true");
-  let letterFound = checkLetter(pressedKey);
-  if(!letterFound) {
-    missed += 1;
-    for (let i = 0; i < missed; i++) {
-      hearts[i].setAttribute("src", "images/lostHeart.png")
+  if (e.target.tagName === 'BUTTON') {
+    e.target.setAttribute("class", "chosen");
+    e.target.setAttribute("disabled", "true");
+    let letterFound = checkLetter(pressedKey);
+    if(!letterFound) {
+      missed += 1;
+      for (let i = 0; i < missed; i++) {
+        hearts[i].setAttribute("src", "images/lostPirate.png")
+      }
     }
-  }
-  let status = checkWin()
-  if (status) {
-    updateOverlay("win", 'You won!');
-  } else if (missed >= 5) {
-    updateOverlay("lose", 'You lost!');
+    if (checkWin()) {
+      updateOverlay("win", 'You won!');
+    } else if (missed >= 5) {
+      updateOverlay("lose", 'You lost!');
+    }
   }
 })
 

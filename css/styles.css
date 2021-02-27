@@ -4,12 +4,11 @@
 /* Variables */
 
 :root {
-  --color-win: #78CF82;
-  --color-lose: #D94545;
-  --color-start: #5b85b7;
-  --color-neutral: #445069;
+  --color-win: #845EC2;
+  --color-lose: #FF9671;
+  --color-start: #FF6F91;
+  --color-button-show: #D65DB1;
   --color-neutral-light: #D2D2D2;
-  --color-keys: #37474F;
   --color-keys-light: #E5E5E5;
   --font-size-large: 60px;
   --font-size-medium: 20px;
@@ -47,13 +46,21 @@ button {
   margin: 6px;
   border: 1px solid transparent;
   padding: .5rem 1rem;
-  color: var(--color-keys);
+  color: var(--color-win);
   font-size: var(--font-size-medium);
   background-color: var(--color-keys-light);
   border-radius: 5px;
   -webkit-transition: var(--transition);
   -o-transition: var(--transition);
   transition: var(--transition);
+}
+
+button:hover, .btn__reset:hover {
+  cursor: pointer;
+}
+
+button:disabled:hover {
+  cursor: not-allowed;
 }
 
 .main-container {
@@ -94,10 +101,10 @@ button {
 }
 
 .show {
-  color: #000;
-  background-color: #76CE82;
+  color: white;
+  background-color: var(--color-button-show);
   transition: color 0.6s, background-color 0.3s;
-  transition-timing-function: ease-in;
+  transition-timing-function: ease-in-out;
 }
 
 /* Keyboard */
@@ -108,7 +115,7 @@ button {
 }
 
 .chosen {
-  background: var(--color-neutral);
+  background: var(--color-win);
   border-radius: 5px;
   font-size: var(--font-size-medium);
   color: #FFFFFF;
@@ -120,6 +127,7 @@ button {
   background: #FFFFFF;
   border-radius: 5px;
   font-size: var(--font-size-medium);
+  color: var(--color-start);
 }
 
 /* Overlay */
@@ -146,7 +154,7 @@ button {
 }
 
 .start a {
-  color: var(--color-win);
+  color: var(--color-start);
 }
 
 .win {
@@ -163,4 +171,8 @@ button {
 
 .lose a {
   color: var(--color-lose);
+}
+
+.message {
+  font-size: var(--font-size-medium);
 }
